@@ -175,7 +175,7 @@ void showDisparityMap(const Mat& disparityMap) {
     waitKey(0);
 
 }
-    */
+*/
 int main() {
     //PART1111111
     /*
@@ -230,18 +230,30 @@ int main() {
     cv::waitKey(0);
     */
     //PARTTTT333333
-    /*
+/*
     Mat leftMap = readPhaseMap("left_uwp_map.csv");
     Mat rightMap = readPhaseMap("right_uwp_map.csv");
+
+    // Convert maps from double to 8-bit for median filtering
+    leftMap.convertTo(leftMap, CV_8U);
+    rightMap.convertTo(rightMap, CV_8U);
+
+    // Apply median filter to mitigate impulse noise
+    medianBlur(leftMap, leftMap, 5);
+    medianBlur(rightMap, rightMap, 5);
+
+    // Convert maps back to double precision
+    leftMap.convertTo(leftMap, CV_64F);
+    rightMap.convertTo(rightMap, CV_64F);
 
     // Apply Gaussian blur to mitigate Gaussian and uniform noise
     GaussianBlur(leftMap, leftMap, Size(5, 5), 1.5);
     GaussianBlur(rightMap, rightMap, Size(5, 5), 1.5);
 
-    // Tolerance should be set based on noise level and data characteristics
-    double tolerance = 0.0;
+    // Calculate disparity
     Mat disparityMap = calculateDisparity(leftMap, rightMap);
 
+    // Display disparity map
     showDisparityMap(disparityMap);
 */
     return 0;
