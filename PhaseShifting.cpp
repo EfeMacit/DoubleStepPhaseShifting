@@ -3,7 +3,11 @@
 #include <cmath>
 #include <vector>
 #include <bitset>
-
+#include <fstream>
+#include <string>
+using namespace cv;
+using namespace std;
+/*
 const int width = 1280;
 const int height = 720;
 const double phase_shift = 60; // Degrees
@@ -113,8 +117,68 @@ cv::Mat computePhaseMap(const cv::Mat& I1, const cv::Mat& I2, const cv::Mat& I3)
 
     return phaseMap;
 }
+*/
+//PARTTTTTT333333
+/*
+Mat readPhaseMap(const string& filename) {
+    ifstream file(filename);
+    vector<vector<double>> matrix;
+    string line, value;
 
+    while (getline(file, line)) {
+        stringstream ss(line);
+        vector<double> row;
+        while (getline(ss, value, ',')) {
+            row.push_back(stod(value));
+        }
+        matrix.push_back(row);
+    }
+
+    Mat phaseMap(matrix.size(), matrix[0].size(), CV_64F);
+    for (size_t i = 0; i < matrix.size(); i++)
+        for (size_t j = 0; j < matrix[i].size(); j++)
+            phaseMap.at<double>(i, j) = matrix[i][j];
+
+    return phaseMap;
+}
+
+Mat calculateDisparity(const Mat& leftImage, const Mat& rightImage) {
+    Mat disparityMap = Mat::zeros(leftImage.rows, leftImage.cols, CV_64F);
+
+    for (int y = 0; y < leftImage.rows; ++y) {
+        for (int x = 0; x < leftImage.cols; ++x) {
+            double leftPixel = leftImage.at<double>(y, x);
+            double rightPixel = rightImage.at<double>(y, x);
+
+            // Check for exact match
+            if (leftPixel != rightPixel) {
+                // If there is any mismatch, the assumption of 'ideal case' is violated.
+                // The pixel is then marked with a non-zero value (for visualization, let's say 1.0).
+                disparityMap.at<double>(y, x) = 1.0;
+            }
+            // If the pixels match exactly, the value in the disparity map remains zero.
+        }
+    }
+    return disparityMap;
+}
+
+void showDisparityMap(const Mat& disparityMap) {
+    // Create an image with the same size as the disparity map, but with 8-bit depth
+    Mat displayMap = Mat::zeros(disparityMap.size(), CV_8U);
+
+    // Convert the 64F image to 8U image. Since we are not expecting any non-zero values,
+    // this should result in a black image if the disparity map is indeed all zeros.
+    disparityMap.convertTo(displayMap, CV_8U);
+
+    // Show the disparity map
+    imshow("Disparity Map", displayMap);
+    waitKey(0);
+
+}
+    */
 int main() {
+    //PART1111111
+    /*
     std::vector<cv::Mat> patterns(6);
     std::vector<cv::Mat> grayImages(numGrayImages);
     // Generate the six patterns
@@ -164,7 +228,21 @@ int main() {
     cv::imwrite("unwrappedPhaseMap.png", unwrappedPhaseMap);
     plotRow(unwrappedPhaseMap, unwrappedPhaseMap.rows / 2, "Unwrapped Phase Plot");
     cv::waitKey(0);
+    */
+    //PARTTTT333333
+    /*
+    Mat leftMap = readPhaseMap("left_uwp_map.csv");
+    Mat rightMap = readPhaseMap("right_uwp_map.csv");
 
+    // Apply Gaussian blur to mitigate Gaussian and uniform noise
+    GaussianBlur(leftMap, leftMap, Size(5, 5), 1.5);
+    GaussianBlur(rightMap, rightMap, Size(5, 5), 1.5);
 
+    // Tolerance should be set based on noise level and data characteristics
+    double tolerance = 0.0;
+    Mat disparityMap = calculateDisparity(leftMap, rightMap);
+
+    showDisparityMap(disparityMap);
+*/
     return 0;
 }
