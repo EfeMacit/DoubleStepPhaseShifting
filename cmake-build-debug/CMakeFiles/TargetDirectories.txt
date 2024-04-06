@@ -1,0 +1,3 @@
+/Users/efemacit/CLionProjects/Kivi/cmake-build-debug/CMakeFiles/Kivi.dir
+/Users/efemacit/CLionProjects/Kivi/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/efemacit/CLionProjects/Kivi/cmake-build-debug/CMakeFiles/rebuild_cache.dir
